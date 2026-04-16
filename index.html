@@ -3,13 +3,112 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>我的網頁遊戲</title>
+  <title>情緒風暴生存戰 🌩️</title>
   <link rel="stylesheet" href="src/css/style.css" />
 </head>
 <body>
-  <div id="app">
-    <h1>🎮 遊戲載入中...</h1>
-  </div>
+  <!-- 背景天空（會隨情緒變化） -->
+  <div class="sky" id="sky"></div>
+  <div class="clouds-bg"></div>
+
+  <!-- 畫面 1：開始畫面 -->
+  <section class="screen active" id="start-screen">
+    <div class="title-group">
+      <h1 class="game-title">
+        <span class="title-line1">情緒風暴</span>
+        <span class="title-line2">生存戰</span>
+      </h1>
+      <div class="title-emoji">🌩️</div>
+    </div>
+    <p class="subtitle">你是情緒天氣師，擋住風暴、保持冷靜！</p>
+    <div class="rules">
+      <div class="rule-item">⏱️ 共 10 關，時間越來越短</div>
+      <div class="rule-item">✅ 選對應對方法 → 風暴被吹散</div>
+      <div class="rule-item">❌ 選錯或超時 → 冷靜值下降</div>
+      <div class="rule-item">🎯 冷靜值歸零就 GAME OVER</div>
+    </div>
+    <button class="btn-primary" id="start-btn">開始挑戰 →</button>
+  </section>
+
+  <!-- 畫面 2：遊戲畫面 -->
+  <section class="screen" id="game-screen">
+    <!-- 頂部：關卡、分數、冷靜值 -->
+    <header class="hud">
+      <div class="hud-item">
+        <span class="hud-label">關卡</span>
+        <span class="hud-value" id="level-value">1 / 10</span>
+      </div>
+      <div class="hud-item">
+        <span class="hud-label">分數</span>
+        <span class="hud-value" id="score-value">0</span>
+      </div>
+      <div class="hud-item calm-meter">
+        <span class="hud-label">冷靜值</span>
+        <div class="calm-bar-container">
+          <div class="calm-bar" id="calm-bar"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 中央：風暴雲 + 情境 -->
+    <div class="game-main">
+      <div class="storm-container">
+        <div class="storm-cloud" id="storm-cloud">⛈️</div>
+        <div class="storm-particles" id="particles"></div>
+      </div>
+
+      <div class="situation-box" id="situation-box">
+        <div class="emotion-tag" id="emotion-tag">焦慮</div>
+        <p class="situation-text" id="situation-text">情境載入中...</p>
+      </div>
+
+      <!-- 倒數計時條 -->
+      <div class="timer-container">
+        <div class="timer-bar" id="timer-bar"></div>
+        <div class="timer-text" id="timer-text">10</div>
+      </div>
+    </div>
+
+    <!-- 底部：3 個選項 -->
+    <div class="options" id="options">
+      <button class="option-btn" data-index="0"></button>
+      <button class="option-btn" data-index="1"></button>
+      <button class="option-btn" data-index="2"></button>
+    </div>
+
+    <!-- 答題後的提示（浮動訊息） -->
+    <div class="feedback hidden" id="feedback">
+      <div class="feedback-icon" id="feedback-icon">✨</div>
+      <div class="feedback-title" id="feedback-title">答對了！</div>
+      <div class="feedback-tip" id="feedback-tip"></div>
+    </div>
+  </section>
+
+  <!-- 畫面 3：結束畫面（天氣報告） -->
+  <section class="screen" id="end-screen">
+    <div class="report-card">
+      <div class="report-weather" id="report-weather">☀️</div>
+      <h2 class="report-title" id="report-title">晴朗萬里</h2>
+      <p class="report-message" id="report-message"></p>
+      <div class="report-stats">
+        <div class="stat">
+          <span class="stat-label">最終分數</span>
+          <span class="stat-value" id="final-score">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">剩餘冷靜值</span>
+          <span class="stat-value" id="final-calm">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">答對題數</span>
+          <span class="stat-value" id="final-correct">0 / 10</span>
+        </div>
+      </div>
+      <button class="btn-primary" id="restart-btn">再玩一次 🔄</button>
+    </div>
+  </section>
+
+  <script src="src/js/scenarios.js"></script>
   <script src="src/js/main.js"></script>
 </body>
 </html>
