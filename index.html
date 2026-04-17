@@ -11,44 +11,183 @@
   <div class="sky" id="sky"></div>
   <div class="clouds-bg"></div>
 
-  <!-- 畫面 1：開始畫面 -->
+  <!-- ======================================
+       畫面 1：開始畫面（遊戲規則）
+  ====================================== -->
   <section class="screen active" id="start-screen">
-    <div class="title-group">
-      <h1 class="game-title">
-        <span class="title-line1">情緒風暴</span>
-        <span class="title-line2">生存戰</span>
-      </h1>
-      <div class="title-emoji">🌩️</div>
-    </div>
-    <p class="subtitle">你是情緒天氣師，擋住風暴、保持冷靜！</p>
-    <div class="rules">
-      <div class="rule-item">⏱️ 共 10 關，時間越來越短</div>
-      <div class="rule-item">✅ 選對應對方法 → 風暴被吹散</div>
-      <div class="rule-item">❌ 選錯或超時 → 冷靜值下降</div>
-      <div class="rule-item">🎯 冷靜值歸零就 GAME OVER</div>
-    </div>
-    <button class="btn-primary" id="start-btn">開始挑戰 →</button>
-  </section>
+    <div class="start-container">
+      <div class="title-group">
+        <h1 class="game-title">
+          <span class="title-line1">情緒風暴</span>
+          <span class="title-line2">生存戰</span>
+        </h1>
+        <div class="title-emoji">🌩️</div>
+      </div>
+      <p class="subtitle">你是情緒天氣師，擋住風暴、保持冷靜！</p>
 
-  <!-- 畫面 2：遊戲畫面 -->
-  <section class="screen" id="game-screen">
-    <!-- 頂部：關卡、分數、冷靜值 -->
-    <header class="hud">
-      <div class="hud-item">
-        <span class="hud-label">關卡</span>
-        <span class="hud-value" id="level-value">1 / 10</span>
-      </div>
-      <div class="hud-item">
-        <span class="hud-label">分數</span>
-        <span class="hud-value" id="score-value">0</span>
-      </div>
-      <div class="hud-item calm-meter">
-        <span class="hud-label">冷靜值</span>
-        <div class="calm-bar-container">
-          <div class="calm-bar" id="calm-bar"></div>
+      <div class="rules">
+        <h2 class="rules-title">📖 遊戲規則</h2>
+
+        <div class="rule-block">
+          <div class="rule-number">1</div>
+          <div class="rule-content">
+            <div class="rule-head">🎬 每關會出現一個情境</div>
+            <div class="rule-body">例如「明天要考試，超緊張！」畫面上會衝下一朵情緒風暴雲 ⛈️</div>
+          </div>
+        </div>
+
+        <div class="rule-block">
+          <div class="rule-number">2</div>
+          <div class="rule-content">
+            <div class="rule-head">🎯 從 3 個選項中選對的應對方法</div>
+            <div class="rule-body">要在時間內點選正確答案！<br><span class="rule-extra">（難度不同，秒數不同：🟢 10 秒 / 🟡 15 秒 / 🔴 20 秒）</span></div>
+          </div>
+        </div>
+
+        <div class="rule-block">
+          <div class="rule-number">3</div>
+          <div class="rule-content">
+            <div class="rule-head">✨ 答對：風暴被吹散 + 加分</div>
+            <div class="rule-body">基本分 <strong>100</strong>，剩越多秒數得越多（每秒 +10 分）<br><span class="rule-extra">（難度越高，單題加的分數越多：🟢 x1 / 🟡 x1.5 / 🔴 x2）</span></div>
+          </div>
+        </div>
+
+        <div class="rule-block">
+          <div class="rule-number">4</div>
+          <div class="rule-content">
+            <div class="rule-head">💥 答錯 / 超時：冷靜值下降</div>
+            <div class="rule-body">答錯 -20，超時 -15，冷靜值歸零直接 GAME OVER</div>
+          </div>
+        </div>
+
+        <div class="rule-block">
+          <div class="rule-number">5</div>
+          <div class="rule-content">
+            <div class="rule-head">🏆 挑戰 10 關並登上排行榜</div>
+            <div class="rule-body">通關後會得到「情緒天氣報告」，分數會送到全校排行榜！</div>
+          </div>
+        </div>
+
+        <div class="rule-block">
+          <div class="rule-number">6</div>
+          <div class="rule-content">
+            <div class="rule-head">🎮 三種難度各玩 1 次</div>
+            <div class="rule-body">每位同學 <strong>簡單、普通、困難各可以挑戰 1 次</strong>（最多 3 次）<br><span class="rule-extra">同一個難度不能重複玩，把三個難度都通關吧！</span></div>
+          </div>
+        </div>
+
+        <div class="rule-block">
+          <div class="rule-number">7</div>
+          <div class="rule-content">
+            <div class="rule-head">🎁 活動結束會發獎品</div>
+            <div class="rule-body">遊戲結束後 <strong>週一統計完</strong>會發獎品，好好挑戰吧！</div>
+          </div>
         </div>
       </div>
+
+      <button class="btn-primary" id="start-btn">開始挑戰 →</button>
+      <button class="btn-ghost" id="view-leaderboard-btn">🏆 查看排行榜</button>
+      <button class="btn-ghost" id="view-history-btn">📋 遊玩紀錄</button>
+    </div>
+  </section>
+
+  <!-- ======================================
+       畫面 2：輸入玩家資訊
+  ====================================== -->
+  <section class="screen" id="info-screen">
+    <div class="info-card">
+      <div class="info-emoji">📝</div>
+      <h2 class="info-title">先填寫你的資訊</h2>
+      <p class="info-hint">這樣成績才能送到排行榜！</p>
+
+      <form id="info-form" class="info-form">
+        <label class="info-field">
+          <span class="info-label">班級</span>
+          <input type="text" id="input-class" placeholder="例：七年三班" required maxlength="20" />
+        </label>
+
+        <label class="info-field">
+          <span class="info-label">姓名</span>
+          <input type="text" id="input-name" placeholder="例：王小明" required maxlength="20" />
+        </label>
+
+        <label class="info-field">
+          <span class="info-label">座號</span>
+          <input type="number" id="input-seat" placeholder="例：15" required min="1" max="99" />
+        </label>
+
+        <div class="info-error hidden" id="info-error">請填寫完整資料！</div>
+
+        <button type="submit" class="btn-primary">進入遊戲 →</button>
+        <button type="button" class="btn-ghost" id="info-back-btn">← 返回</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ======================================
+       畫面 2.5：選擇難度
+  ====================================== -->
+  <section class="screen" id="difficulty-screen">
+    <div class="difficulty-container">
+      <h2 class="difficulty-title">⚔️ 選擇難度</h2>
+      <p class="difficulty-hint" id="difficulty-greeting">選好難度就開始！</p>
+      <div class="play-status hidden" id="play-status"></div>
+
+      <div class="difficulty-cards">
+        <button class="diff-card" data-difficulty="easy">
+          <div class="diff-emoji">🟢</div>
+          <div class="diff-name">簡單</div>
+          <div class="diff-sub">答案很明顯 · 每題 10 秒</div>
+          <div class="diff-desc">錯誤選項一看就知道不對<br>適合第一次玩的同學</div>
+        </button>
+
+        <button class="diff-card recommended" data-difficulty="normal">
+          <div class="diff-badge">推薦</div>
+          <div class="diff-emoji">🟡</div>
+          <div class="diff-name">普通</div>
+          <div class="diff-sub">需要基本情緒知識 · 每題 15 秒</div>
+          <div class="diff-desc">錯誤選項看似合理但有副作用<br>需要停下來思考</div>
+        </button>
+
+        <button class="diff-card" data-difficulty="hard">
+          <div class="diff-emoji">🔴</div>
+          <div class="diff-name">困難</div>
+          <div class="diff-sub">需要心理學邏輯 · 每題 20 秒</div>
+          <div class="diff-desc">三個選項都看似合理<br>要用邏輯判斷最佳解</div>
+        </button>
+      </div>
+
+      <button type="button" class="btn-ghost" id="difficulty-back-btn">← 返回</button>
+    </div>
+  </section>
+
+  <!-- ======================================
+       畫面 3：遊戲畫面
+  ====================================== -->
+  <section class="screen" id="game-screen">
+    <!-- 頂部：關卡、分數、冷靜值、退出鈕 -->
+    <header class="hud">
+      <div class="hud-left">
+        <div class="hud-item">
+          <span class="hud-label">關卡</span>
+          <span class="hud-value" id="level-value">1 / 10</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-label">分數</span>
+          <span class="hud-value" id="score-value">0</span>
+        </div>
+        <div class="hud-item calm-meter">
+          <span class="hud-label">冷靜值</span>
+          <div class="calm-bar-container">
+            <div class="calm-bar" id="calm-bar"></div>
+          </div>
+        </div>
+      </div>
+      <button class="btn-exit" id="exit-btn" title="退出遊戲">✕ 退出</button>
     </header>
+
+    <!-- 玩家標籤 -->
+    <div class="player-tag" id="player-tag">玩家名字</div>
 
     <!-- 中央：風暴雲 + 情境 -->
     <div class="game-main">
@@ -65,7 +204,7 @@
       <!-- 倒數計時條 -->
       <div class="timer-container">
         <div class="timer-bar" id="timer-bar"></div>
-        <div class="timer-text" id="timer-text">10</div>
+        <div class="timer-text" id="timer-text">15</div>
       </div>
     </div>
 
@@ -82,14 +221,33 @@
       <div class="feedback-title" id="feedback-title">答對了！</div>
       <div class="feedback-tip" id="feedback-tip"></div>
     </div>
+
+    <!-- 退出確認彈窗 -->
+    <div class="confirm-modal hidden" id="exit-modal">
+      <div class="confirm-box">
+        <div class="confirm-icon">⚠️</div>
+        <h3 class="confirm-title">確定要退出嗎？</h3>
+        <p class="confirm-text">你的進度將不會被儲存！</p>
+        <div class="confirm-buttons">
+          <button class="btn-confirm-yes" id="exit-confirm-yes">確定退出</button>
+          <button class="btn-confirm-no" id="exit-confirm-no">繼續遊戲</button>
+        </div>
+      </div>
+    </div>
   </section>
 
-  <!-- 畫面 3：結束畫面（天氣報告） -->
+  <!-- ======================================
+       畫面 4：結束畫面（天氣報告）
+  ====================================== -->
   <section class="screen" id="end-screen">
     <div class="report-card">
       <div class="report-weather" id="report-weather">☀️</div>
       <h2 class="report-title" id="report-title">晴朗萬里</h2>
       <p class="report-message" id="report-message"></p>
+
+      <div class="player-summary" id="player-summary"></div>
+      <div class="difficulty-badge" id="difficulty-badge"></div>
+
       <div class="report-stats">
         <div class="stat">
           <span class="stat-label">最終分數</span>
@@ -104,10 +262,59 @@
           <span class="stat-value" id="final-correct">0 / 10</span>
         </div>
       </div>
-      <button class="btn-primary" id="restart-btn">再玩一次 🔄</button>
+
+      <div class="submit-status" id="submit-status">📤 成績上傳中...</div>
+
+      <div class="end-buttons">
+        <button class="btn-primary" id="view-rank-btn">🏆 看排行榜</button>
+        <button class="btn-ghost" id="restart-btn">再玩一次 🔄</button>
+      </div>
     </div>
   </section>
 
+  <!-- ======================================
+       畫面 5：排行榜
+  ====================================== -->
+  <section class="screen" id="leaderboard-screen">
+    <div class="leaderboard-card">
+      <h2 class="leaderboard-title">🏆 情緒大師排行榜</h2>
+      <p class="leaderboard-sub">依難度分別計算</p>
+
+      <div class="diff-tabs" id="diff-tabs">
+        <button class="diff-tab active" data-difficulty="easy">🟢 簡單</button>
+        <button class="diff-tab" data-difficulty="normal">🟡 普通</button>
+        <button class="diff-tab" data-difficulty="hard">🔴 困難</button>
+      </div>
+
+      <div class="leaderboard-list" id="leaderboard-list">
+        <div class="loading">📊 載入中...</div>
+      </div>
+
+      <button class="btn-primary" id="back-home-btn">← 回首頁</button>
+    </div>
+  </section>
+
+  <!-- ======================================
+       畫面 6：遊玩紀錄（誰玩過、什麼時候玩）
+  ====================================== -->
+  <section class="screen" id="history-screen">
+    <div class="leaderboard-card">
+      <h2 class="leaderboard-title">📋 遊玩紀錄</h2>
+      <p class="leaderboard-sub">看看誰已經挑戰過了</p>
+
+      <div class="history-summary" id="history-summary"></div>
+
+      <div class="history-list" id="history-list">
+        <div class="loading">📊 載入中...</div>
+      </div>
+
+      <button class="btn-primary" id="back-home-from-history-btn">← 回首頁</button>
+    </div>
+  </section>
+
+  <!-- Supabase JS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="src/js/config.js"></script>
   <script src="src/js/scenarios.js"></script>
   <script src="src/js/main.js"></script>
 </body>
