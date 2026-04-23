@@ -12,7 +12,7 @@ const state = {
   timeLeft: 0,
   locked: false,
   // 玩家資訊
-  player: { className: '', name: '', seat: 0 },
+  player: { className: '', name: '' },
   // 當前難度
   difficulty: 'normal',
   // 當前使用的題組（依難度選）
@@ -324,7 +324,7 @@ async function endGame(completed) {
 
   // 顯示玩家摘要
   $('player-summary').textContent =
-    `🎓 ${state.player.className} | ${state.player.seat}號 ${state.player.name}`;
+    `🎓 ${state.player.className} | ${state.player.name}`;
 
   // 顯示難度徽章
   const diffInfo = DIFFICULTY_LABELS[state.difficulty];
@@ -348,7 +348,7 @@ async function submitScore(completed, weatherTitle, durationSec = 0) {
       .insert({
         class_name: state.player.className,
         student_name: state.player.name,
-        seat_number: state.player.seat,
+        seat_number: 0,
         difficulty: state.difficulty,
         score: state.score,
         calm_remaining: state.calm,
@@ -415,7 +415,7 @@ async function loadLeaderboard() {
         <div class="rank-medal">${medalText}</div>
         <div class="rank-info">
           <div class="rank-name">${escapeHTML(row.student_name)}${isMe ? ' (你)' : ''}</div>
-          <div class="rank-class">${escapeHTML(row.class_name)} · ${row.seat_number}號 · ${row.weather_title || ''} · 冷靜值 ${row.calm_remaining}</div>
+          <div class="rank-class">${escapeHTML(row.class_name)} · ${row.weather_title || ''} · 冷靜值 ${row.calm_remaining}</div>
         </div>
         <div class="rank-score">
           <div class="rank-score-value">${row.score}</div>
@@ -441,14 +441,13 @@ function escapeHTML(str) {
 }
 
 // ---- 查詢此玩家已玩過的難度 ----
-async function fetchPlayedDifficulties(className, name, seat) {
+async function fetchPlayedDifficulties(className, name) {
   try {
     const { data, error } = await supabaseClient
       .from(LEADERBOARD_TABLE)
       .select('difficulty')
       .eq('class_name', className)
-      .eq('student_name', name)
-      .eq('seat_number', seat);
+      .eq('student_name', name);
     if (error) throw error;
     // 去重，回傳陣列 e.g. ['easy', 'hard']
     return [...new Set((data || []).map(r => r.difficulty))];
@@ -503,7 +502,7 @@ function updateDifficultyCards() {
   }
 }
 
-// ---- 載入遊玩紀錄（班級/姓名/座號/日期時間，不顯示分數） ----
+// ---- 載入遊玩紀錄（班級/綽號/日期時間，不顯示分數） ----
 async function loadPlayHistory() {
   const list = $('history-list');
   const summary = $('history-summary');
@@ -513,7 +512,7 @@ async function loadPlayHistory() {
   try {
     const { data, error } = await supabaseClient
       .from(LEADERBOARD_TABLE)
-      .select('class_name, student_name, seat_number, difficulty, created_at, duration_seconds')
+      .select('class_name, student_name, difficulty, created_at, duration_seconds')
       .order('created_at', { ascending: false })
       .limit(500);
 
@@ -526,7 +525,7 @@ async function loadPlayHistory() {
 
     // 顯示總場次 + 不重複人數
     const uniqueKeys = new Set(
-      data.map(r => `${r.class_name}|${r.student_name}|${r.seat_number}`)
+      data.map(r => `${r.class_name}|${r.student_name}`)
     );
     summary.textContent = `共 ${data.length} 場挑戰 · ${uniqueKeys.size} 位同學參與`;
 
@@ -548,7 +547,7 @@ async function loadPlayHistory() {
             ${escapeHTML(row.student_name)}
             <span class="history-diff">${diffInfo.emoji} ${diffInfo.name}</span>
           </div>
-          <div class="history-sub">${escapeHTML(row.class_name)} · ${row.seat_number}號 · <span class="history-duration">${dur}</span></div>
+          <div class="history-sub">${escapeHTML(row.class_name)} · <span class="history-duration">${dur}</span></div>
         </div>
         <div class="history-time">
           <div class="history-date">${dateStr}</div>
@@ -615,9 +614,7 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     const className = $('input-class').value.trim();
     const name = $('input-name').value.trim();
-    const seat = parseInt($('input-seat').value, 10);
-
-    if (!className || !name || !seat || seat < 1) {
+    if (!className || !name) {
       const err = $('info-error');
       err.textContent = '請填寫完整資料！';
       err.classList.remove('hidden');
@@ -625,8 +622,8 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    state.player = { className, name, seat };
-    $('player-tag').textContent = `🎓 ${className} · ${seat}號 ${name}`;
+    state.player = { className, name };
+    $('player-tag').textContent = `🎓 ${className} · ${name}`;
 
     // 暫時把按鈕改成「查詢中」
     const submitBtn = e.target.querySelector('button[type="submit"]');
@@ -635,7 +632,7 @@ document.addEventListener('DOMContentLoaded', () => {
     submitBtn.disabled = true;
 
     // 查詢這位玩家玩過哪些難度
-    state.playedDifficulties = await fetchPlayedDifficulties(className, name, seat);
+    state.playedDifficulties = await fetchPlayedDifficulties(className, name);
 
     submitBtn.textContent = originalText;
     submitBtn.disabled = false;
@@ -727,7 +724,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // 再跟 DB 同步一次（確保資料正確）
     const fresh = await fetchPlayedDifficulties(
-      state.player.className, state.player.name, state.player.seat
+      state.player.className, state.player.name
     );
     if (fresh.length > 0) state.playedDifficulties = fresh;
 
